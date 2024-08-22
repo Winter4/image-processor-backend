@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16.4-alpine
+    container_name: "template-postgres"
+    environment:
+      POSTGRES_DB: "template"
+      POSTGRES_USER: "dev"
+      POSTGRES_PASSWORD: "localpass"
+    volumes:
+      - template-postgres:/var/lib/postgresql/data
+    ports:
+      - "5400:5432"
+
+  redis:
+    image: redis:7.4.0-alpine
+    container_name: "template-redis"
+    command: >
+      --requirepass localpass
+    ports:
+      - "6300:6379"
+    tmpfs:
+      - /data
+
+  adminer:
+    image: adminer
+    container_name: "template-adminer"
+    ports:
+      - 8080:8080
+
+volumes:
+  template-postgres:
+    driver: local
+    name: template-postgres

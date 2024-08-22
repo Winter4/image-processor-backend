@@ -1,0 +1,26 @@
+{
+  "ts-node": {
+    "files": true,
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"]
+  },
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "commonjs",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["source/*"],
+      "@config": ["config/index.ts"],
+      "@ctx": ["source/context.ts"],
+      "@err": ["source/errors.ts"],
+      "@tables": ["database/tables.ts"]
+    },
+    "outDir": "./compiled",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true
+  }
+}

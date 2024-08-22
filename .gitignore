@@ -1,0 +1,8 @@
+/node_modules
+/compiled
+docker-compose.deploy.yml
+.env
+
+.husky/_
+
+config/local.ts

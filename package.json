@@ -1,0 +1,53 @@
+{
+  "name": "api-template",
+  "version": "0.1",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "update-packages": "sh ./scripts/update-packages.sh",
+    "prepare": "husky",
+    "psql": "docker exec -it template-postgres psql -U dev template",
+    "api:dev": "cross-env NODE_ENV=development npx nodemon source/api.ts | pino-pretty --translateTime",
+    "compose:up": "docker compose -f ./docker-compose.dev.yml up -d",
+    "compose:start": "docker compose -f ./docker-compose.dev.yml start",
+    "compose:stop": "docker compose -f ./docker-compose.dev.yml stop",
+    "compose:down": "docker compose -f ./docker-compose.dev.yml down --volumes",
+    "compose:restart": "npm run compose:down && npm run compose:up && sleep 2 && npm run migrate",
+    "migrate:new": "npx knex migrate:make --knexfile ./database/knexfile.ts --migrations-directory ../migrations",
+    "migrate": "npx knex migrate:latest --knexfile ./database/knexfile.ts --migrations-directory ../migrations"
+  },
+  "author": "Winter4 <mywinter4@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "connect-redis": "^7.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.0",
+    "ioredis": "^5.4.1",
+    "knex": "^3.1.0",
+    "pg": "^8.12.0",
+    "pino": "^9.3.2",
+    "pino-http": "^10.2.0",
+    "pino-pretty": "^11.2.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "globals": "^15.9.0",
+    "typescript-eslint": "^8.2.0",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/node": "^22.4.0",
+    "eslint": "^9.9.0",
+    "husky": "^9.1.4",
+    "nodemon": "^3.1.4",
+    "npm-check-updates": "^17.0.6",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4"
+  }
+}
