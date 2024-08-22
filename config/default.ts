@@ -16,11 +16,11 @@ if(!process.env.NODE_ENV) throw new Error('NODE_ENV should be specified');
 
 const config: Config = {
 	nodeEnv: process.env.NODE_ENV,
-	projectName: 'project',
+	projectName: 'image-processor',
 	deploy: {
 		apiPort: 5001,
 		frontendUrl: 'localhost',
-		dbUrl: 'postgresql://dev:localpass@localhost:5400/dbname',
+		dbUrl: 'postgresql://dev:localpass@localhost:5400/image-processor',
 		dbLogs: false,
 		redisUrl: 'redis://:localpass@localhost:6300/0'
 	},

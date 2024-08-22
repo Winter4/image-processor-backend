@@ -6,7 +6,7 @@
   "scripts": {
     "update-packages": "sh ./scripts/update-packages.sh",
     "prepare": "husky",
-    "psql": "docker exec -it template-postgres psql -U dev template",
+    "psql": "docker exec -it image-processor-postgres psql -U dev image-processor",
     "api:dev": "cross-env NODE_ENV=development npx nodemon source/api.ts | pino-pretty --translateTime",
     "compose:up": "docker compose -f ./docker-compose.dev.yml up -d",
     "compose:start": "docker compose -f ./docker-compose.dev.yml start",
@@ -35,19 +35,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
-    "globals": "^15.9.0",
-    "typescript-eslint": "^8.2.0",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.5.0",
     "eslint": "^9.9.0",
-    "husky": "^9.1.4",
+    "globals": "^15.9.0",
+    "husky": "^9.1.5",
     "nodemon": "^3.1.4",
-    "npm-check-updates": "^17.0.6",
+    "npm-check-updates": "^17.1.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0"
   }
 }

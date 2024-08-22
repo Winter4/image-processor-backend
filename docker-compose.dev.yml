@@ -3,19 +3,19 @@ version: "3.9"
 services:
   postgres:
     image: postgres:16.4-alpine
-    container_name: "template-postgres"
+    container_name: "image-processor-postgres"
     environment:
-      POSTGRES_DB: "template"
+      POSTGRES_DB: "image-processor"
       POSTGRES_USER: "dev"
       POSTGRES_PASSWORD: "localpass"
     volumes:
-      - template-postgres:/var/lib/postgresql/data
+      - image-processor-postgres:/var/lib/postgresql/data
     ports:
       - "5400:5432"
 
   redis:
     image: redis:7.4.0-alpine
-    container_name: "template-redis"
+    container_name: "image-processor-redis"
     command: >
       --requirepass localpass
     ports:
@@ -25,11 +25,11 @@ services:
 
   adminer:
     image: adminer
-    container_name: "template-adminer"
+    container_name: "image-processor-adminer"
     ports:
       - 8080:8080
 
 volumes:
-  template-postgres:
+  image-processor-postgres:
     driver: local
-    name: template-postgres
+    name: image-processor-postgres
