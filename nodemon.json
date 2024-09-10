@@ -1,4 +1,9 @@
 {
     "verbose": true,
-    "watch": ["source", "config", ".env"]
+    "watch": [
+        "source",
+        "config/default.ts",
+        "config/index.ts",
+        ".env"
+    ]
 }

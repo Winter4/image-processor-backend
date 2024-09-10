@@ -29,7 +29,8 @@ export default [
 					'static': {'after': false},
 					'as': {'after': false}
 				}
-			}]
+			}],
+			'arrow-parens': ['error', 'as-needed']
 		}
 	},
 	{
