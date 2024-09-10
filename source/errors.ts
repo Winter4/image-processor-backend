@@ -27,3 +27,10 @@ export class NotFoundError extends AppError {
 		super(text, 404);
 	}
 }
+
+export class InvalidAuthError extends AppError {
+	constructor(message?: string) {
+		const text = message ?? 'Invalid auth data';
+		super(text, 404);
+	}
+}

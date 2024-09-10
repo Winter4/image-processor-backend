@@ -6,3 +6,4 @@ docker-compose.deploy.yml
 .husky/_
 
 config/local.ts
+config/config.json

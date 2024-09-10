@@ -9,6 +9,7 @@ type Config = {
 		redisUrl: string;
 	};
 	sessionSecret: string;
+	passwordSalt: string;
 }
 
 /* checks */
@@ -21,10 +22,11 @@ const config: Config = {
 		apiPort: 5001,
 		frontendUrl: 'localhost',
 		dbUrl: 'postgresql://dev:localpass@localhost:5400/image-processor',
-		dbLogs: false,
+		dbLogs: true,
 		redisUrl: 'redis://:localpass@localhost:6300/0'
 	},
-	sessionSecret: 'use uuid lol'
+	sessionSecret: 'use uuid lol',
+	passwordSalt: 'this should be secure'
 };
 
 export {Config};
