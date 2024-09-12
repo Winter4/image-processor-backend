@@ -12,7 +12,7 @@ const User = db<UserTable>('users');
 
 async function signIn(req: Request, res: Response) {
 	const {email, password} = req.body;
-	const existingUser = await User.where({email}).first();
+	const [existingUser] = await User.where({email});
 	if(!existingUser) throw new errors.NotFoundError('User');
 
 	const passwordHash = await crypt(password, config.passwordSalt, 32).toString('hex');

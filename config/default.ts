@@ -22,7 +22,7 @@ const config: Config = {
 		apiPort: 5001,
 		frontendUrl: 'localhost',
 		dbUrl: 'postgresql://dev:localpass@localhost:5400/image-processor',
-		dbLogs: true,
+		dbLogs: false,
 		redisUrl: 'redis://:localpass@localhost:6300/0'
 	},
 	sessionSecret: 'use uuid lol',
