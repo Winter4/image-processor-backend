@@ -30,7 +30,9 @@ export default [
 					'as': {'after': false}
 				}
 			}],
-			'arrow-parens': ['error', 'as-needed']
+			'arrow-parens': ['error', 'as-needed'],
+			'arrow-body-style': ['error', 'as-needed'],
+			'no-console': 'error'
 		}
 	},
 	{
