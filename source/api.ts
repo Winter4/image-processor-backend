@@ -4,6 +4,8 @@ import session from 'express-session';
 import RedisStore from 'connect-redis';
 import cors from 'cors';
 import type {UUID} from 'crypto';
+import fs from 'fs';
+import path from 'path';
 
 import config from '@config';
 import {logger, redis} from '@ctx';
@@ -19,6 +21,8 @@ declare module 'express-session' {
 	}
   }
 }
+
+const tmpDirPath = path.resolve(__dirname, '..', '.tmp');
 
 async function main() {
 	const {nodeEnv, deploy: {apiPort, frontendUrl}, sessionSecret} = config;
@@ -59,6 +63,9 @@ async function main() {
 	app.listen(apiPort);
 
 	logger.info(`\\|/ API is running on port ${apiPort} \\|/`);
+
+	if(!fs.existsSync(tmpDirPath))
+		fs.mkdirSync(tmpDirPath);
 }
 
 main();

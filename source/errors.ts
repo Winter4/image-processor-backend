@@ -34,3 +34,17 @@ export class InvalidAuthError extends AppError {
 		super(text, 404);
 	}
 }
+
+export class InvalidRequestError extends AppError {
+	constructor(message?: string) {
+		const text = message ?? 'Invalid request';
+		super(text, 400);
+	}
+}
+
+export class UnauthorizedError extends AppError {
+	constructor(message?: string) {
+		const text = message ?? 'Unauthorized user';
+		super(text, 401);
+	}
+}

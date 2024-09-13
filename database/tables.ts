@@ -9,4 +9,19 @@ type User = {
     created: Date;
 };
 
-export type {User as UserTable};
+type Image = {
+    id: UUID;
+    userId: UUID;
+    title: string;
+    data: Buffer;
+    mimeType: string;
+    handleType: string;
+    md5: string;
+    update: Date;
+    created: Date;
+}
+
+export type {
+	User as UserTable,
+	Image as ImageTable
+};

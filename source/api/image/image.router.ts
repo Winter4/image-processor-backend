@@ -1,12 +1,14 @@
 import {Router} from 'express';
 import ah from 'express-async-handler';
-import {signIn, signUp, logout, me} from './image.controller';
+import path from 'path';
+import {get, upload} from './image.controller';
+
+import multer from 'multer';
+const media = multer({dest: path.resolve(__dirname, '..', '..', '..', '.tmp')});
 
 const auth = Router();
 
-auth.post('/sign-in', ah(signIn));
-auth.post('/sign-up', ah(signUp));
-auth.post('/logout', ah(logout));
-auth.post('/me', ah(me));
+auth.post('/get', ah(get));
+auth.post('/upload', media.single('image'), ah(upload));
 
 export default auth;
