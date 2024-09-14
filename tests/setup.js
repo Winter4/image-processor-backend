@@ -12,8 +12,5 @@ const db = knex({
 	connection: config.deploy.dbUrl,
 	debug: config.deploy.dbLogs
 });
-const tables = {
-	User: db('users')
-};
 
-module.exports = {config, api, tables, db};
+module.exports = {config, api, db};

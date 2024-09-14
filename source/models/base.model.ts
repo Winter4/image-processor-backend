@@ -48,7 +48,9 @@ abstract class Entity<Table extends QueryObject> {
 
     public async getMany(query: Query, params?: Partial<GetParams<Table>>) {
     	const values = await this.get(query, 'many', params);
-    	const count = await db<Table>(this.table).count(query);
+
+    	const [result] = await db<Table>(this.table).count().where(query);
+    	const count = +result['count'];
 
     	return {values, count};
     }
