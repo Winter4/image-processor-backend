@@ -14,7 +14,7 @@
       "@config": ["config/index.ts"],
       "@ctx": ["source/context.ts"],
       "@err": ["source/errors.ts"],
-      "@tables": ["database/tables.ts"]
+      "@models/*": ["source/models/*"]
     },
     "outDir": "./compiled",
     "esModuleInterop": true,

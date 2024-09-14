@@ -20,7 +20,7 @@ const config: Config = {
 	projectName: 'image-processor',
 	deploy: {
 		apiPort: 5001,
-		frontendUrl: 'localhost',
+		frontendUrl: 'http://localhost:3000',
 		dbUrl: 'postgresql://dev:localpass@localhost:5400/image-processor',
 		dbLogs: false,
 		redisUrl: 'redis://:localpass@localhost:6300/0'

@@ -1,19 +1,19 @@
 import {Request, Response} from 'express';
 import {createHash} from 'crypto';
+import fs from 'fs';
 
-import {db} from '@ctx';
-import type {ImageTable} from '@tables';
 import * as errors from '@err';
 
-const Image = db<ImageTable>('images');
+import Image from '@models/image.model';
 
 /* - - - - - - - - - - - - - - - - - - */
 
 async function get(req: Request, res: Response) {
-	const {userId} = req.body;
+	const {user} = req.session;
+	if(!user) throw new errors.UnauthorizedError();
 
-	const images = await Image.where({userId});
-	res.json({data: images});
+	const result = await Image.getMany({userId: user.id}, {select: ['title', 'id', 'created']});
+	res.json({data: result});
 }
 
 async function upload(req: Request, res: Response) {
@@ -23,20 +23,33 @@ async function upload(req: Request, res: Response) {
 	const {user} = req.session;
 	if(!user) throw new errors.UnauthorizedError();
 
-	const {title, handleType} = req.body;
+	const buffer = fs.readFileSync(file.path);
 
-	await Image.insert({
+	await Image.create({
 		userId: user!.id,
-		title,
-		data: file.buffer,
+		title: 'test-img',
+		data: buffer,
 		mimeType: file.mimetype,
-		handleType,
-		md5: createHash('md5').update(file.buffer).digest('hex')
+		handleType: 'original',
+		md5: createHash('md5').update(buffer).digest('hex')
 	});
 
-	res.send(200);
+	res.sendStatus(200);
+}
+
+async function download(req: Request, res: Response) {
+	const {imageId} = req.params;
+	if(!imageId) throw new errors.InvalidRequestError;
+
+	if(!req.session.user) throw new errors.UnauthorizedError;
+
+	const image = await Image.getOne({id: imageId, userId: req.session.user.id}, {select: ['data', 'userId', 'mimeType']});
+	if(!image) throw new errors.NotFoundError('Image');
+
+	res.contentType(image.mimeType);
+	res.send(image.data);
 }
 
 /* - - - - - - - - - - - - - - - - - - */
 
-export {get, upload};
+export {get, upload, download};

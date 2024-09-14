@@ -3,7 +3,6 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import RedisStore from 'connect-redis';
 import cors from 'cors';
-import type {UUID} from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
@@ -16,7 +15,7 @@ import api from './api/api.router';
 declare module 'express-session' {
   export interface SessionData {
     user: {
-		id: UUID,
+		id: string,
 		email: string,
 	}
   }
@@ -36,7 +35,7 @@ async function main() {
 				client: redis,
 			}),
 			cookie: {
-				httpOnly: true,
+				httpOnly: false,
 				secure: nodeEnv === 'production',
 				// month
 				maxAge: 30 * 24 * 60 * 60 * 1000

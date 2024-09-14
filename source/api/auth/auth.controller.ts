@@ -2,17 +2,15 @@ import {Request, Response} from 'express';
 import {scryptSync as crypt} from 'crypto';
 
 import config from '@config';
-import {db} from '@ctx';
-import type {UserTable} from '@tables';
 import * as errors from '@err';
 
-const User = db<UserTable>('users');
+import User from '@models/user.model';
 
 /* - - - - - - - - - - - - - - - - - - */
 
 async function signIn(req: Request, res: Response) {
 	const {email, password} = req.body;
-	const [existingUser] = await User.where({email});
+	const existingUser = await User.getOne({email});
 	if(!existingUser) throw new errors.NotFoundError('User');
 
 	const passwordHash = await crypt(password, config.passwordSalt, 32).toString('hex');
@@ -23,17 +21,17 @@ async function signIn(req: Request, res: Response) {
 		email: existingUser.email
 	};
 
-	res.json({value: req.session.user});
+	res.json({data: req.session.user});
 }
 
 async function signUp(req: Request, res: Response) {
 	const {email, password} = req.body;
 
-	const [existingUser] = await User.where({email});
+	const existingUser = await User.getOne({email});
 	if(existingUser) throw new errors.AlreadyExistsError('User');
 
 	const passwordHash = await crypt(password, config.passwordSalt, 32).toString('hex');
-	await User.insert({email, passwordHash}).returning('*');
+	await User.create({email, passwordHash});
 
 	res.send();
 }
@@ -44,7 +42,7 @@ async function logout(req: Request, res: Response) {
 }
 
 async function me(req: Request, res: Response) {
-	res.json({value: req.session.user});
+	res.json({data: req.session.user});
 }
 
 /* - - - - - - - - - - - - - - - - - - */
