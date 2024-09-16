@@ -41,6 +41,14 @@ export async function up(knex: Knex): Promise<void> {
 			.notNullable();
 
 		table
+			.integer('width')
+			.notNullable();
+
+		table
+			.integer('height')
+			.notNullable();
+
+		table
 			.timestamp('updated', {useTz: true})
 			.defaultTo(knex.raw('(now() at time zone \'utc-2\')'));
 		table
