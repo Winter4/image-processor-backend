@@ -42,9 +42,12 @@ async function logout(req: Request, res: Response) {
 }
 
 async function me(req: Request, res: Response) {
-	res.json({data: req.session.user});
+	const session = req.session.user;
+	if(!session) throw new errors.UnauthorizedError();
+
+	res.json({data: session});
 }
 
 /* - - - - - - - - - - - - - - - - - - */
 
-export {signIn, signUp, me, logout};
+export {signIn, signUp, logout, me};
