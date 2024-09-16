@@ -17,9 +17,9 @@ const cleanUsers = async() => {
 	await db('users').delete({});
 };
 
-describe('API / Auth', () => {
-	before(() => cleanUsers());
-	after(() => cleanUsers());
+describe.only('API / Auth', () => {
+	before(cleanUsers);
+	after(cleanUsers);
 
 	describe('#sign-up', () => {
 		it('should work', async() => {
@@ -41,6 +41,33 @@ describe('API / Auth', () => {
 
 		it('should error with unexisting user', async() => {
 			await api.post('/auth/sign-in').send({email: 'tutu', password: '123'}).expect(404);
+		});
+	});
+
+	describe('#me', () => {
+		it('should work', async() => {
+			const loginResp = await api.post('/auth/sign-in').send(user).expect(200);
+			const loginCookies = loginResp.headers['set-cookie'];
+			should(loginCookies).match(new RegExp('.*sessionid=.*'));
+
+			const meResp = await api.post('/auth/me').set('Cookie', [loginCookies]);
+			const {data: meData} = meResp.body;
+			meData.should.match({email: user.email});
+		});
+	});
+
+	describe('#logout', () => {
+		it('should work', async() => {
+			const loginResp = await api.post('/auth/sign-in').send(user).expect(200);
+			const loginCookies = loginResp.headers['set-cookie'];
+			should(loginCookies).match(new RegExp('.*sessionid=.*'));
+
+			const meResp = await api.post('/auth/me').set('Cookie', [loginCookies]);
+			const {data: meData} = meResp.body;
+			meData.should.match({email: user.email});
+
+			await api.post('/auth/logout').set('Cookie', [loginCookies]);
+			await api.post('/auth/me').set('Cookie', [loginCookies]).expect(401);
 		});
 	});
 });
