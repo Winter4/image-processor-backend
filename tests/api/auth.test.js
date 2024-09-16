@@ -12,14 +12,14 @@ const user = {
 
 /* - - - - - - - - - - - - - - - - - - */
 
-const cleanUsers = async() => {
+const clean = async() => {
 	await db('images').delete({});
 	await db('users').delete({});
 };
 
 describe.only('API / Auth', () => {
-	before(cleanUsers);
-	after(cleanUsers);
+	before(clean);
+	after(clean);
 
 	describe('#sign-up', () => {
 		it('should work', async() => {
