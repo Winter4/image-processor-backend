@@ -11,7 +11,7 @@ function logHTTP(req: Request, res: Response, next: NextFunction) {
 			req: (req: Request) => ({
 				method: req.method,
 				url: req.url,
-				session: req.session
+				session: req.session,
 			}),
 		},
 	});

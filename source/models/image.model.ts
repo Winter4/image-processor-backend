@@ -8,6 +8,8 @@ type ImageTable = {
     mimeType: string;
     handleType: string;
     md5: string;
+    width: number;
+    height: number;
     update: Date;
     created: Date;
 };
@@ -17,4 +19,5 @@ class Image extends Entity<ImageTable> {
 	name = 'Image';
 }
 
+export type {ImageTable};
 export default new Image();

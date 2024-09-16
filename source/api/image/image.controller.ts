@@ -5,6 +5,7 @@ import fs from 'fs';
 import * as errors from '@err';
 
 import Image from '@models/image.model';
+import processImage from './image.processor';
 
 /* - - - - - - - - - - - - - - - - - - */
 
@@ -50,6 +51,22 @@ async function download(req: Request, res: Response) {
 	res.send(image.data);
 }
 
+async function process(req: Request, res: Response) {
+	// if(!req.session.user) throw new errors.UnauthorizedError;
+
+	const {imageId, filter} = req.body;
+	if(!imageId || !filter) throw new errors.InvalidRequestError();
+
+	const image = await Image.getOne({id: imageId});
+	if(!image) throw new errors.NotFoundError('Image');
+
+	const imageRaw = await processImage(image, filter);
+	const buffer = Buffer.from(imageRaw);
+
+	res.contentType(image.mimeType);
+	res.send(buffer);
+}
+
 /* - - - - - - - - - - - - - - - - - - */
 
-export {get, upload, download};
+export {get, upload, download, process};
