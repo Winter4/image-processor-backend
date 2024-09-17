@@ -1,7 +1,7 @@
 import type {ImageTable} from '@models/image.model';
 import * as errors from '@err';
 
-async function processImage(image: ImageTable, filter: string) {
+function processImage(image: ImageTable, filter: string) {
 	switch (filter) {
 	case 'sharpen':
 		return _applySharpen(image);

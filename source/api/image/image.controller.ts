@@ -1,6 +1,8 @@
 import {Request, Response} from 'express';
 import {createHash} from 'crypto';
 import fs from 'fs';
+import path from 'path';
+import * as canvas from 'canvas';
 
 import * as errors from '@err';
 
@@ -60,13 +62,39 @@ async function process(req: Request, res: Response) {
 	const image = await Image.getOne({id: imageId});
 	if(!image) throw new errors.NotFoundError('Image');
 
-	const imageRaw = await processImage(image, filter);
-	const buffer = Buffer.from(imageRaw);
+	const processedBuffer = Buffer.from(processImage(image, filter));
+	console.log('🚀 ~ process ~ processedBuffer:', processedBuffer);
+	fs.writeFileSync(path.join(__dirname, 'test.jpeg'), processedBuffer);
+
+	const loadedImg = await canvas.loadImage(processedBuffer);
+	loadedImg.src = processedBuffer;
+
+	const canvasObj = canvas.createCanvas(image.width, image.height);
+	const canvasCtx = canvasObj.getContext('2d');
+
+	canvasCtx.drawImage(loadedImg, 0, 0);
+	const outputBuffer = canvasObj.toBuffer(image.mimeType);
 
 	res.contentType(image.mimeType);
-	res.send(buffer);
+	res.send(outputBuffer);
 }
 
 /* - - - - - - - - - - - - - - - - - - */
 
 export {get, upload, download, process};
+
+
+/* const img = await loadImage(buffer);
+
+	// Создаем холст с размерами изображения
+	const canvas = createCanvas(img.width, img.height);
+	const ctx = canvas.getContext('2d');
+
+	// Рисуем изображение на холсте
+	ctx.drawImage(img, 0, 0);
+
+	// Конвертируем холст обратно в буфер
+	const outputBuffer = canvas.toBuffer(image.mimeType);
+
+	res.contentType(image.mimeType);
+	res.send(outputBuffer); */

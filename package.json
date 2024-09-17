@@ -20,6 +20,7 @@
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.11.2",
     "connect-redis": "^7.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
