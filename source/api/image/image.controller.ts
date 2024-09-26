@@ -1,10 +1,10 @@
 import {Request, Response} from 'express';
 import {createHash} from 'crypto';
 import fs from 'fs';
-import path from 'path';
-import * as canvas from 'canvas';
+import sharp from 'sharp';
 
 import * as errors from '@err';
+import {logger} from '@ctx';
 
 import Image from '@models/image.model';
 import processImage from './image.processor';
@@ -27,17 +27,23 @@ async function upload(req: Request, res: Response) {
 	if(!user) throw new errors.UnauthorizedError();
 
 	const buffer = fs.readFileSync(file.path);
+	const {width, height} = await sharp(buffer).metadata();
+	if(!width || !height) throw new errors.InvalidRequestError('Can not get image WxH');
 
-	await Image.create({
-		userId: user!.id,
+	const result = await Image.create({
+		userId: user.id,
 		title: 'test-img',
 		data: buffer,
 		mimeType: file.mimetype,
 		handleType: 'original',
-		md5: createHash('md5').update(buffer).digest('hex')
-	});
+		md5: createHash('md5').update(buffer).digest('hex'),
+		width,
+		height
+	}, ['id', 'title']);
 
-	res.sendStatus(200);
+	fs.unlinkSync(file.path);
+
+	res.json({data: result});
 }
 
 async function download(req: Request, res: Response) {
@@ -63,19 +69,20 @@ async function process(req: Request, res: Response) {
 	if(!image) throw new errors.NotFoundError('Image');
 
 	const processedBuffer = Buffer.from(processImage(image, filter));
-	fs.writeFileSync(path.join(__dirname, 'test.jpeg'), processedBuffer);
 
-	const loadedImg = await canvas.loadImage(processedBuffer);
-	loadedImg.src = processedBuffer;
-
-	const canvasObj = canvas.createCanvas(image.width, image.height);
-	const canvasCtx = canvasObj.getContext('2d');
-
-	canvasCtx.drawImage(loadedImg, 0, 0);
-	const outputBuffer = canvasObj.toBuffer(image.mimeType);
+	let processedImage = null;
+	try {
+		processedImage = await sharp(processedBuffer)
+			.toFormat(image.mimeType.split('/')[1])
+			.toBuffer();
+	} catch (error) {
+		logger.error('Error processing image with sharp:');
+		logger.error(error);
+		throw new errors.InternalError();
+	}
 
 	res.contentType(image.mimeType);
-	res.send(outputBuffer);
+	res.send(processedImage);
 }
 
 /* - - - - - - - - - - - - - - - - - - */

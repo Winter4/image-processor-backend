@@ -19,7 +19,7 @@ const cleanUsers = async() => {
 	await db('users').delete({});
 };
 
-describe.only('API / User', () => {
+describe('API / User', () => {
 	before(cleanUsers);
 	before('create users', () => Promise.all(users.map(user => api.post('/auth/sign-up').send(user).expect(200))));
 

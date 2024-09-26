@@ -17,7 +17,7 @@ const clean = async() => {
 	await db('users').delete({});
 };
 
-describe.only('API / Auth', () => {
+describe('API / Auth', () => {
 	before(clean);
 	after(clean);
 

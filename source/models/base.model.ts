@@ -55,9 +55,10 @@ abstract class Entity<Table extends QueryObject> {
     	return {values, count};
     }
 
-    public create(object: Partial<Table>, select: string[] = ['*']) {
+    public async create(object: Partial<Table>, select: string[] = ['*']) {
     	// @ts-expect-error don't know how to type the paran properly; seems like knex.insert() doesn't like TS generics
-    	return db<Table>(this.table).insert(object).returning(select);
+    	const [result] = await db<Table>(this.table).insert(object).returning(select);
+    	return result;
     }
 }
 
