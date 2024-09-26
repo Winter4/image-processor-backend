@@ -63,7 +63,6 @@ async function process(req: Request, res: Response) {
 	if(!image) throw new errors.NotFoundError('Image');
 
 	const processedBuffer = Buffer.from(processImage(image, filter));
-	console.log('🚀 ~ process ~ processedBuffer:', processedBuffer);
 	fs.writeFileSync(path.join(__dirname, 'test.jpeg'), processedBuffer);
 
 	const loadedImg = await canvas.loadImage(processedBuffer);
