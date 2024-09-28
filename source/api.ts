@@ -10,15 +10,6 @@ import {logger} from '@ctx';
 import {errorHandler, preMiddlewares} from './middlewares';
 import api from './api/api.router';
 
-declare module 'express-session' {
-  export interface SessionData {
-    user: {
-		id: string,
-		email: string,
-	}
-  }
-}
-
 const tmpDirPath = path.resolve(__dirname, '..', '.tmp');
 
 async function main() {
