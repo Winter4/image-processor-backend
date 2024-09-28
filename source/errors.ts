@@ -8,6 +8,13 @@ export default abstract class AppError extends Error {
 	}
 }
 
+export class InternalError extends AppError {
+	constructor(message?: string) {
+		const text = message || 'Internal server error';
+		super(text, 500);
+	}
+}
+
 export class AlreadyExistsError extends AppError {
 	constructor(
         public readonly entity: string,
