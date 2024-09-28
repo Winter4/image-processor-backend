@@ -1,8 +1,7 @@
 import {Request, Response} from 'express';
 import {createHash} from 'crypto';
 import fs from 'fs';
-import path from 'path';
-import * as canvas from 'canvas';
+import sharp from 'sharp';
 
 import * as errors from '@err';
 
@@ -12,10 +11,7 @@ import processImage from './image.processor';
 /* - - - - - - - - - - - - - - - - - - */
 
 async function get(req: Request, res: Response) {
-	const {user} = req.session;
-	if(!user) throw new errors.UnauthorizedError();
-
-	const result = await Image.getMany({userId: user.id}, {select: ['title', 'id', 'created']});
+	const result = await Image.getMany({}, {select: ['title', 'id', 'created']});
 	res.json({data: result});
 }
 
@@ -23,30 +19,30 @@ async function upload(req: Request, res: Response) {
 	const {file} = req;
 	if(!file) throw new errors.InvalidRequestError('Request should contain a file to upload');
 
-	const {user} = req.session;
-	if(!user) throw new errors.UnauthorizedError();
-
 	const buffer = fs.readFileSync(file.path);
+	const {width, height} = await sharp(buffer).metadata();
+	if(!width || !height) throw new errors.InvalidRequestError('Can not get image WxH');
 
-	await Image.create({
-		userId: user!.id,
-		title: 'test-img',
+	const result = await Image.create({
+		title: file.originalname,
 		data: buffer,
 		mimeType: file.mimetype,
 		handleType: 'original',
-		md5: createHash('md5').update(buffer).digest('hex')
-	});
+		md5: createHash('md5').update(buffer).digest('hex'),
+		width,
+		height
+	}, ['id', 'title']);
 
-	res.sendStatus(200);
+	fs.unlinkSync(file.path);
+
+	res.json({data: result});
 }
 
 async function download(req: Request, res: Response) {
 	const {imageId} = req.params;
 	if(!imageId) throw new errors.InvalidRequestError;
 
-	if(!req.session.user) throw new errors.UnauthorizedError;
-
-	const image = await Image.getOne({id: imageId, userId: req.session.user.id}, {select: ['data', 'userId', 'mimeType']});
+	const image = await Image.getOne({id: imageId}, {select: ['data', 'mimeType']});
 	if(!image) throw new errors.NotFoundError('Image');
 
 	res.contentType(image.mimeType);
@@ -54,25 +50,27 @@ async function download(req: Request, res: Response) {
 }
 
 async function process(req: Request, res: Response) {
-	// if(!req.session.user) throw new errors.UnauthorizedError;
-
 	const {imageId, filter} = req.body;
 	if(!imageId || !filter) throw new errors.InvalidRequestError();
 
 	const image = await Image.getOne({id: imageId});
 	if(!image) throw new errors.NotFoundError('Image');
 
-	const processedBuffer = Buffer.from(processImage(image, filter));
-	fs.writeFileSync(path.join(__dirname, 'test.jpeg'), processedBuffer);
+	// Используем sharp для получения несжатых данных изображения
+	const {data: rawImageData, info: {width, height, channels}} = await sharp(image.data)
+		.raw()
+		.toBuffer({resolveWithObject: true});
 
-	const loadedImg = await canvas.loadImage(processedBuffer);
-	loadedImg.src = processedBuffer;
+	const processedBuffer = processImage({data: rawImageData, width, height}, filter);
 
-	const canvasObj = canvas.createCanvas(image.width, image.height);
-	const canvasCtx = canvasObj.getContext('2d');
-
-	canvasCtx.drawImage(loadedImg, 0, 0);
-	const outputBuffer = canvasObj.toBuffer(image.mimeType);
+	  // После обработки создаём новое изображение
+	const outputBuffer = await sharp(processedBuffer, {
+		raw: {
+			width,
+			height,
+			channels,
+		}
+	}).jpeg().toBuffer();  // Или .png() для PNG-формата
 
 	res.contentType(image.mimeType);
 	res.send(outputBuffer);
@@ -81,19 +79,3 @@ async function process(req: Request, res: Response) {
 /* - - - - - - - - - - - - - - - - - - */
 
 export {get, upload, download, process};
-
-
-/* const img = await loadImage(buffer);
-
-	// Создаем холст с размерами изображения
-	const canvas = createCanvas(img.width, img.height);
-	const ctx = canvas.getContext('2d');
-
-	// Рисуем изображение на холсте
-	ctx.drawImage(img, 0, 0);
-
-	// Конвертируем холст обратно в буфер
-	const outputBuffer = canvas.toBuffer(image.mimeType);
-
-	res.contentType(image.mimeType);
-	res.send(outputBuffer); */

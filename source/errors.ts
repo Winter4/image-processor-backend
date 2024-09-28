@@ -49,6 +49,13 @@ export class InvalidRequestError extends AppError {
 	}
 }
 
+export class InvalidParamsError extends AppError {
+	constructor(message?: string) {
+		const text = message ?? 'Invalid params';
+		super(text, 400);
+	}
+}
+
 export class UnauthorizedError extends AppError {
 	constructor(message?: string) {
 		const text = message ?? 'Unauthorized user';
