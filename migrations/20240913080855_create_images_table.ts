@@ -13,13 +13,6 @@ export async function up(knex: Knex): Promise<void> {
 			.defaultTo(knex.raw('gen_random_uuid()'));
 
 		table
-			.uuid('userId')
-			.notNullable()
-			.references('id')
-			.inTable('users')
-			.onDelete('RESTRICT');
-
-		table
 			.string('title')
 			.notNullable();
 

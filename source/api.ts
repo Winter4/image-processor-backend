@@ -1,13 +1,11 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import RedisStore from 'connect-redis';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 
 import config from '@config';
-import {logger, redis} from '@ctx';
+import {logger} from '@ctx';
 
 import {errorHandler, preMiddlewares} from './middlewares';
 import api from './api/api.router';
@@ -24,28 +22,10 @@ declare module 'express-session' {
 const tmpDirPath = path.resolve(__dirname, '..', '.tmp');
 
 async function main() {
-	const {nodeEnv, deploy: {apiPort, frontendUrl}, sessionSecret} = config;
+	const {nodeEnv, deploy: {apiPort, frontendUrl}} = config;
 
 	const app = express();
 
-	// session config
-	app.use(
-		session({
-			store: new RedisStore({
-				client: redis,
-			}),
-			cookie: {
-				httpOnly: false,
-				secure: nodeEnv === 'production',
-				// month
-				maxAge: 30 * 24 * 60 * 60 * 1000
-			},
-			name: 'sessionid',
-			saveUninitialized: false,
-			secret: sessionSecret,
-			resave: false,
-		})
-	);
 	// system middlewares
 	app.use(cors({credentials: true, origin: frontendUrl}));
 	app.use(express.json());

@@ -8,8 +8,6 @@ type Config = {
 		dbLogs: boolean;
 		redisUrl: string;
 	};
-	sessionSecret: string;
-	passwordSalt: string;
 }
 
 /* checks */
@@ -24,9 +22,7 @@ const config: Config = {
 		dbUrl: 'postgresql://dev:localpass@localhost:5400/image-processor',
 		dbLogs: false,
 		redisUrl: 'redis://:localpass@localhost:6300/0'
-	},
-	sessionSecret: 'use uuid lol',
-	passwordSalt: 'this should be secure'
+	}
 };
 
 export {Config};
