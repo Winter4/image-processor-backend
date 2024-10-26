@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import * as errors from '@err';
 
 import Image from '@models/image.model';
-import processImage from './image.processor';
+import processImage from './image.native-processor';
 
 /* - - - - - - - - - - - - - - - - - - */
 
@@ -49,7 +49,7 @@ async function download(req: Request, res: Response) {
 	res.send(image.data);
 }
 
-async function process(req: Request, res: Response) {
+async function processNative(req: Request, res: Response) {
 	const {imageId, filter} = req.body;
 	if(!imageId || !filter) throw new errors.InvalidRequestError();
 
@@ -78,4 +78,4 @@ async function process(req: Request, res: Response) {
 
 /* - - - - - - - - - - - - - - - - - - */
 
-export {get, upload, download, process};
+export {get, upload, download, processNative};
