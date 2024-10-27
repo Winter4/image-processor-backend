@@ -6,7 +6,8 @@ import sharp from 'sharp';
 import * as errors from '@err';
 
 import Image from '@models/image.model';
-import processImage from './image.native-processor';
+import processImageNative from './image.native-processor';
+import processImageWasm from './image.wasm-processor';
 
 /* - - - - - - - - - - - - - - - - - - */
 
@@ -49,19 +50,43 @@ async function download(req: Request, res: Response) {
 	res.send(image.data);
 }
 
-async function processNative(req: Request, res: Response) {
+async function _process(req: Request) {
 	const {imageId, filter} = req.body;
 	if(!imageId || !filter) throw new errors.InvalidRequestError();
 
 	const image = await Image.getOne({id: imageId});
 	if(!image) throw new errors.NotFoundError('Image');
 
-	// Используем sharp для получения несжатых данных изображения
-	const {data: rawImageData, info: {width, height, channels}} = await sharp(image.data)
-		.raw()
-		.toBuffer({resolveWithObject: true});
+	return {
+		image,
+		sharp: await sharp(image.data)
+			.raw()
+			.toBuffer({resolveWithObject: true})
+	};
+}
 
-	const processedBuffer = processImage({data: rawImageData, width, height}, filter);
+async function processNative(req: Request, res: Response) {
+	const {image, sharp: {data: rawImageData, info: {width, height, channels}}} = await _process(req);
+
+	const processedBuffer = processImageNative({data: rawImageData, width, height}, req.body.filter);
+
+	  // После обработки создаём новое изображение
+	const outputBuffer = await sharp(processedBuffer, {
+		raw: {
+			width,
+			height,
+			channels,
+		}
+	}).jpeg().toBuffer();  // Или .png() для PNG-формата
+
+	res.contentType(image.mimeType);
+	res.send(outputBuffer);
+}
+
+async function processWasm(req: Request, res: Response) {
+	const {image, sharp: {data: rawImageData, info: {width, height, channels}}} = await _process(req);
+
+	const processedBuffer = await processImageWasm({data: rawImageData, width, height}, req.body.filter);
 
 	  // После обработки создаём новое изображение
 	const outputBuffer = await sharp(processedBuffer, {
@@ -78,4 +103,4 @@ async function processNative(req: Request, res: Response) {
 
 /* - - - - - - - - - - - - - - - - - - */
 
-export {get, upload, download, processNative};
+export {get, upload, download, processNative, processWasm};

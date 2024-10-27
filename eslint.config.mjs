@@ -42,7 +42,8 @@ export default [
 			'node_modules',
 			// so you have to add `**/` pattern to include nested directories (for example if you use pnpm workspace)
 			'**/node_modules',
-			'compiled'
+			'compiled',
+			'**/image.wasm-processor.js'
 		]
 	}
 ];

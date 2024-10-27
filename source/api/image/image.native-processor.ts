@@ -11,8 +11,8 @@ function processImage(imageData: ImageParam, filter: string): Buffer {
 	const inputArray = new Uint8ClampedArray(data);
 
 	if(filter === 'gaussian-blur') {
-		const kernelSize = 5;
-		const sigma = 1.0;
+		const kernelSize = 7;
+		const sigma = 7.0;
 		const kernel = createGaussianKernel(kernelSize, sigma);
 
 		const outputArray = new Uint8ClampedArray(inputArray.length);
