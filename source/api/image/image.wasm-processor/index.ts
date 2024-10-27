@@ -1,5 +1,8 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+
+// @ts-expect-error TODO: proper import
+import initWasmModule from './image.wasm-processor.js';
 
 type ImageParam = {
     data: Buffer;
@@ -7,16 +10,14 @@ type ImageParam = {
     height: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let wasmModule: any;
 
 async function initializeWasmModule() {
 	if(!wasmModule) {
-		const wasmFilePath = path.resolve(__dirname, './image.wasm-processor.wasm');
-		const wasmBuffer = await fs.readFileSync(wasmFilePath);
-
-		// загружаем и инициализируем WebAssembly модуль
-		const wasmInstance = await WebAssembly.instantiate(wasmBuffer, {});
-		wasmModule = wasmInstance.instance.exports;
+		wasmModule = await initWasmModule({
+			wasmBinary: fs.readFileSync(path.join(__dirname, 'image.wasm-processor.wasm'))
+		});
 	}
 }
 
