@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-// @ts-expect-error TODO: proper import
 import initWasmModule from './image.wasm-processor.js';
 
 type ImageParam = {

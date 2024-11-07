@@ -16,7 +16,9 @@
     "migrate:new": "cross-env NODE_ENV=development npx knex migrate:make --knexfile ./database/knexfile.ts --migrations-directory ../migrations",
     "migrate": "cross-env NODE_ENV=development npx knex migrate:latest --knexfile ./database/knexfile.ts --migrations-directory ../migrations",
     "test": "mocha --config ./tests/mocha.config.js --exit",
-    "compile-wasm": "emcc source/api/image/image.wasm-processor/image.wasm-processor.c -o source/api/image/image.wasm-processor/image.wasm-processor.js -s EXPORTED_FUNCTIONS=\"['_malloc', '_free', '_processImage']\" -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=0 "
+    "compile-wasm": "emcc source/api/image/image.wasm-processor/image.wasm-processor.c -o source/api/image/image.wasm-processor/image.wasm-processor.js -s EXPORTED_FUNCTIONS=\"['_malloc', '_free', '_processImage']\" -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=0 ",
+    "tsc": "sh ./scripts/compile-production.sh",
+    "build": "docker build -t image-processor-backend:latest ."
   },
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",
@@ -54,6 +56,7 @@
     "should": "^13.2.3",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0"

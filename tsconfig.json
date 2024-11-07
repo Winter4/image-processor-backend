@@ -21,6 +21,11 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "exactOptionalPropertyTypes": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "benchmark",
+    "compiled"
+  ]
 }
