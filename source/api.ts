@@ -25,7 +25,7 @@ async function main() {
 	// api and stuff
 	app.use(preMiddlewares());
 	if(nodeEnv === 'development') app.use('/api', api);
-	else api.use(api);
+	else app.use(api);
 
 	app.use(errorHandler);
 

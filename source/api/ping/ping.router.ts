@@ -4,6 +4,6 @@ import {method} from './ping.controller';
 
 const ping = Router();
 
-ping.use('/', ah(method));
+ping.all('/', ah(method));
 
 export default ping;
