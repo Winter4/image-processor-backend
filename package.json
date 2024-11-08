@@ -18,7 +18,8 @@
     "test": "mocha --config ./tests/mocha.config.js --exit",
     "compile-wasm": "emcc source/api/image/image.wasm-processor/image.wasm-processor.c -o source/api/image/image.wasm-processor/image.wasm-processor.js -s EXPORTED_FUNCTIONS=\"['_malloc', '_free', '_processImage']\" -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=0 ",
     "tsc": "sh ./scripts/compile-production.sh",
-    "build": "docker build -t image-processor-backend:latest ."
+    "build": "docker build -t image-processor-backend:latest .",
+    "benchmark:up": "docker compose -f docker-compose.benchmark.yml up --build"
   },
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",
