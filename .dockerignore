@@ -1,6 +1,5 @@
 /.husky
 /benchmark
-/migrations
 /node_modules
 /tests
 /compiled
