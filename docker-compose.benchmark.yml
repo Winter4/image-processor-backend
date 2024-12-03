@@ -31,6 +31,7 @@ services:
     container_name: prometheus
     volumes:
       - ./benchmark/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
     ports:
       - "9090:9090"
     depends_on:
@@ -41,8 +42,10 @@ services:
     image: grafana/grafana
     container_name: grafana
     volumes:
-      - ./benchmark/grafana/provisioning:/etc/grafana/provisioning
-      - grafana_data:/var/lib/grafana
+      - ./benchmark/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./benchmark/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./benchmark/grafana/dashboards-json:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
     ports:
       - "3001:3000"
     depends_on:
@@ -57,4 +60,10 @@ services:
 #       - app
 
 volumes:
-  grafana_data:
+  grafana-data:
+    driver: local
+    name: image-processor-benchmark-grafana
+
+  prometheus-data:
+    driver: local
+    name: image-processor-benchmark-prometheus
