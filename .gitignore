@@ -8,3 +8,5 @@ docker-compose.deploy.yml
 
 config/local.ts
 config/config.json
+
+source/metrics-output.csv
