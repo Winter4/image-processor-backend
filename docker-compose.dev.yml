@@ -13,21 +13,21 @@ services:
     ports:
       - "5400:5432"
 
-#  redis:
-#    image: redis:7.4.0-alpine
-#    container_name: "image-processor-redis"
-#    command: >
-#      --requirepass localpass
-#    ports:
-#      - "6300:6379"
-#    tmpfs:
-#      - /data
-
-  # adminer:
-  #   image: adminer
-  #   container_name: "image-processor-adminer"
-  #   ports:
-  #     - 8080:8080
+# redis:
+#   image: redis:7.4.0-alpine
+#   container_name: "image-processor-redis"
+#   command: >
+#     --requirepass localpass
+#   ports:
+#     - "6300:6379"
+#   tmpfs:
+#     - /data
+#
+# adminer:
+#   image: adminer
+#   container_name: "image-processor-adminer"
+#   ports:
+#     - 8080:8080
 
 volumes:
   image-processor-postgres:

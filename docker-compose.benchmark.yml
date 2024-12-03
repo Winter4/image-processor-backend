@@ -8,7 +8,7 @@ services:
     build: .
     image: image-processor-backend:latest
     container_name: backend
-    command: sh -c "npm run migrate && node ./compiled/source/api.js"
+    command: sh -c "sleep 5 && npm run migrate && node ./compiled/source/api.js"
     ports:
       - "5001:5001"
     volumes:
@@ -54,13 +54,14 @@ services:
     depends_on:
       - prometheus
 
-#   k6:
-#     image: grafana/k6
-#     volumes:
-#       - ./benchmark/k6.js:/k6/k6.js
-#     command: run --out statsd --address statsd:8125 --out json=/k6/k6_report.json /k6/k6.js
-#     depends_on:
-#       - app
+  k6:
+    image: grafana/k6
+    container_name: k6
+    volumes:
+      - ./benchmark/k6:/k6
+    command: sh -c "sleep 20 && k6 run /k6/k6.js"
+    depends_on:
+      - app
 
 volumes:
   grafana-data:
