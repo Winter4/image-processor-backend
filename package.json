@@ -20,7 +20,9 @@
     "tsc": "sh ./scripts/compile-production.sh",
     "benchmark:build": "docker compose -f ./docker-compose.benchmark.yml build app",
     "benchmark:up": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark up -d",
-    "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down"
+    "benchmark:start": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark start",
+    "benchmark:stop": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark stop",
+    "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down --volumes"
   },
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",

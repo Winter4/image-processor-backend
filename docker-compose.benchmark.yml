@@ -11,6 +11,9 @@ services:
     command: sh -c "npm run migrate && node ./compiled/source/api.js"
     ports:
       - "5001:5001"
+    volumes:
+      - ./source/metrics-output.csv:/app/compiled/source/metrics-output.csv
+    restart: always
     depends_on:
       - postgres
 

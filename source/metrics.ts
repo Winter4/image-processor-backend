@@ -1,5 +1,10 @@
 import {Router} from 'express';
 import promClient from 'prom-client';
+import fs from 'fs';
+import path from 'path';
+
+const METRICS_OUTPUT_FILE_PATH = path.join(__dirname, './metrics-output.csv');
+const METRICS_HEADER = 'timestamp,cpu-usage,ram-usage\n';
 
 const metrics = Router();
 
@@ -20,6 +25,11 @@ const ramUsageGauge = new promClient.Gauge({
 register.registerMetric(cpuLoadGauge);
 register.registerMetric(ramUsageGauge);
 
+// Создаём файл для записи метрик
+fs.openSync(METRICS_OUTPUT_FILE_PATH, 'w');
+const metricsOutputStream = fs.createWriteStream(METRICS_OUTPUT_FILE_PATH, {flags: 'w'});
+metricsOutputStream.write(METRICS_HEADER);
+
 // Функция для обновления метрик
 function updateMetrics() {
 	const cpuUsage = process.cpuUsage(); // Использование CPU
@@ -30,6 +40,9 @@ function updateMetrics() {
 	// Обновляем метрики
 	cpuLoadGauge.set(cpuLoad);
 	ramUsageGauge.set(ramUsage.rss); // Использование памяти (Resident Set Size)
+
+	// Пишем метрики в файл
+	metricsOutputStream.write(`${Date.now()},${cpuLoad},${ramUsage.rss}\n`);
 }
 
 // Обновляем метрики каждые 1 секунду
