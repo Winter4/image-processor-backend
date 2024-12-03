@@ -1,0 +1,60 @@
+# ---
+
+include:
+  - docker-compose.dev.yml
+
+services:
+  app:
+    build: .
+    image: image-processor-backend:latest
+    container_name: backend
+    command: sh -c "npm run migrate && node ./compiled/source/api.js"
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "9100:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./benchmark/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app
+      - cadvisor
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - ./benchmark/grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+
+#   k6:
+#     image: grafana/k6
+#     volumes:
+#       - ./benchmark/k6.js:/k6/k6.js
+#     command: run --out statsd --address statsd:8125 --out json=/k6/k6_report.json /k6/k6.js
+#     depends_on:
+#       - app
+
+volumes:
+  grafana_data:

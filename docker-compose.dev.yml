@@ -23,11 +23,11 @@ services:
 #    tmpfs:
 #      - /data
 
-  adminer:
-    image: adminer
-    container_name: "image-processor-adminer"
-    ports:
-      - 8080:8080
+  # adminer:
+  #   image: adminer
+  #   container_name: "image-processor-adminer"
+  #   ports:
+  #     - 8080:8080
 
 volumes:
   image-processor-postgres:
