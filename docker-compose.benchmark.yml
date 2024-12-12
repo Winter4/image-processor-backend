@@ -13,9 +13,16 @@ services:
       - "5001:5001"
     volumes:
       - ./source/metrics-output.csv:/app/compiled/source/metrics-output.csv
+    healthcheck:
+      test: wget -nv -t1 --spider http://localhost:5001/ping/
+      interval: 5s
+      timeout: 5s
+      retries: 5
     restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+        required: true
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -54,13 +61,16 @@ services:
     depends_on:
       - prometheus
 
-#   k6:
-#     image: grafana/k6
-#     volumes:
-#       - ./benchmark/k6.js:/k6/k6.js
-#     command: run --out statsd --address statsd:8125 --out json=/k6/k6_report.json /k6/k6.js
-#     depends_on:
-#       - app
+  k6:
+    image: grafana/k6
+    container_name: k6
+    volumes:
+      - ./benchmark/k6:/k6
+    command: run /k6/k6.js # image entrypoint is 'k6'
+    depends_on:
+      app:
+        condition: service_healthy
+        required: true
 
 volumes:
   grafana-data:

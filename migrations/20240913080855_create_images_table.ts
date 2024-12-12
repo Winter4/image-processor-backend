@@ -30,7 +30,6 @@ export async function up(knex: Knex): Promise<void> {
 
 		table
 			.string('md5')
-			.unique()
 			.notNullable();
 
 		table
