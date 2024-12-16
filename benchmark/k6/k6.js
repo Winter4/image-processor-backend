@@ -1,23 +1,34 @@
 import http from 'k6/http';
 import {check} from 'k6';
 
+const HOST = 'http://app:5001';
+
 export const options = {
-	vus: 10,         // Количество виртуальных пользователей (aka RPS)
-	duration: '10s',  // Время нагрузки
+	stages: [
+		{duration: '5m', target: 50}
+	]
 };
 
 // Читаем файл из смонтированной директории
 // eslint-disable-next-line no-undef
 const fileData = open('/k6/images/mountains.jpg', 'b'); // 'b' - для бинарного чтения
 
-// Создаём payload для multipart-запроса
-const payload = {
-	image: http.file(fileData, 'mountains.jpg')
-};
-const url = 'http://app:5001/image/upload';
+export function setup() {
+	const body = http
+		.post(`${HOST}/image/upload`, {image: http.file(fileData, 'mountains.jpg')})
+		.json();
 
-export default function () {
-	const res = http.post(url, payload);
+	return body.data;
+}
+
+export default function({id}) {
+	const url = `${HOST}/image/process-native`;
+
+	const res = http.post(
+		url,
+		JSON.stringify({imageId: id, filter: 'gaussian-blur'}),
+		{headers: {'Content-Type': 'application/json'}}
+	);
 
 	check(res, {
 		'status is 200': r => r.status === 200,
