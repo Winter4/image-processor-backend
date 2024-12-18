@@ -24,18 +24,6 @@ services:
         condition: service_healthy
         required: true
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    ports:
-      - "9100:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -46,7 +34,6 @@ services:
       - "9090:9090"
     depends_on:
       - app
-      - cadvisor
 
   grafana:
     image: grafana/grafana
