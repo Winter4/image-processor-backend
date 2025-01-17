@@ -5,13 +5,13 @@ const HOST = 'http://app:5001';
 
 export const options = {
 	stages: [
-		{duration: '5m', target: 50}
+		{duration: '1m', target: 5}
 	]
 };
 
 // Читаем файл из смонтированной директории
 // eslint-disable-next-line no-undef
-const fileData = open('/k6/images/mountains.jpg', 'b'); // 'b' - для бинарного чтения
+const fileData = open('/k6/images/0.3mb.jpg', 'b'); // 'b' - для бинарного чтения
 
 export function setup() {
 	const body = http
@@ -22,7 +22,7 @@ export function setup() {
 }
 
 export default function({id}) {
-	const url = `${HOST}/image/process-native`;
+	const url = `${HOST}/image/process-wasm`;
 
 	const res = http.post(
 		url,
