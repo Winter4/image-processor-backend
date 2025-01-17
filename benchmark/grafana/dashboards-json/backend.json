@@ -110,24 +110,10 @@
                     },
                     "editorMode": "code",
                     "expr": "rate(container_cpu_usage_seconds_total {name=\"backend\"}[10s]) * 100",
-                    "interval": "1s",
+                    "interval": "5s",
                     "legendFormat": "__auto",
                     "range": true,
                     "refId": "A"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "editorMode": "code",
-                    "expr": "rate(app_cpu_usage_microsec[10s]) / 1000000 * 100",
-                    "hide": false,
-                    "instant": false,
-                    "interval": "1s",
-                    "legendFormat": "__auto",
-                    "range": true,
-                    "refId": "B"
                 }
             ],
             "title": "Cpu Usage (%)",
@@ -216,14 +202,6 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
-                    "editorMode": "code",
-                    "expr": "app_ram_usage_bytes / 1024 / 1024",
-                    "interval": "1s",
-                    "legendFormat": "__auto",
-                    "range": true,
-                    "refId": "A"
-                },
-                {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "PBFA97CFB590B2093"
@@ -232,7 +210,7 @@
                     "expr": "(container_memory_rss {name=\"backend\"}) / 1024 / 1024",
                     "hide": false,
                     "instant": false,
-                    "interval": "1s",
+                    "interval": "5s",
                     "legendFormat": "__auto",
                     "range": true,
                     "refId": "B"
@@ -257,6 +235,6 @@
     "timezone": "browser",
     "title": "Backend",
     "uid": "fe5sn3ucfy8sga",
-    "version": 7,
+    "version": 2,
     "weekStart": ""
 }

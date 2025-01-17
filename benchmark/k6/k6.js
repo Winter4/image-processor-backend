@@ -11,7 +11,7 @@ export const options = {
 
 // Читаем файл из смонтированной директории
 // eslint-disable-next-line no-undef
-const fileData = open('/k6/images/0.3mb.jpg', 'b'); // 'b' - для бинарного чтения
+const fileData = open('/k6/images/10mb.jpg', 'b'); // 'b' - для бинарного чтения
 
 export function setup() {
 	const body = http

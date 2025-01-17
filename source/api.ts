@@ -3,14 +3,13 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
-import expressMonitor from 'express-status-monitor';
 
 import config from '@config';
 import {logger} from '@ctx';
 
 import {errorHandler, preMiddlewares} from './middlewares';
 import api from './api/api.router';
-import metrics from './metrics';
+import './metrics';
 
 const tmpDirPath = path.resolve(__dirname, '..', '.tmp');
 
@@ -18,7 +17,6 @@ async function main() {
 	const {nodeEnv, deploy: {apiPort, frontendUrl}} = config;
 
 	const app = express();
-	app.use(expressMonitor());
 
 	// system middlewares
 	app.use(cors({credentials: true, origin: frontendUrl}));
@@ -30,7 +28,6 @@ async function main() {
 	if(nodeEnv === 'development') app.use('/api', api);
 	else app.use(api);
 
-	app.use(metrics);
 	app.use(errorHandler);
 
 	// run

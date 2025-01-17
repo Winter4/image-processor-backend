@@ -62,6 +62,8 @@ services:
       - prometheus
 
   k6:
+    profiles:
+      - excluded
     image: grafana/k6
     container_name: k6
     volumes:
