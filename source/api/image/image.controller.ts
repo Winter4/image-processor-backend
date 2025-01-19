@@ -88,19 +88,67 @@ async function processWasm(req: Request, res: Response) {
 
 	const processedBuffer = await processImageWasm({data: rawImageData, width, height}, req.body.filter);
 
-	  // После обработки создаём новое изображение
+	// После обработки создаём новое изображение
 	const outputBuffer = await sharp(processedBuffer, {
 		raw: {
 			width,
 			height,
 			channels,
 		}
-	}).jpeg().toBuffer();  // Или .png() для PNG-формата
+	}).jpeg().toBuffer();
 
 	res.contentType(image.mimeType);
 	res.send(outputBuffer);
 }
 
+async function processNativeDirect(req: Request, res: Response) {
+	const {file} = req;
+	if(!file) throw new errors.InvalidRequestError('Request should contain a file to upload');
+
+	const image = await sharp(file.path);
+
+	const {width, height, channels} = await image.metadata();
+	if(!width || !height || !channels) throw new errors.InvalidParamsError('Could not get image metadata');
+
+	const processedBuffer = processImageNative({data: await image.raw().toBuffer(), width, height}, 'gaussian-blur');
+
+	// После обработки создаём новое изображение
+	const outputBuffer = await sharp(processedBuffer, {
+		raw: {
+			width,
+			height,
+			channels,
+		}
+	}).jpeg().toBuffer();
+
+	res.contentType(file.mimetype);
+	res.send(outputBuffer);
+}
+
+async function processWasmDirect(req: Request, res: Response) {
+	const {file} = req;
+	if(!file) throw new errors.InvalidRequestError('Request should contain a file to upload');
+
+	const image = await sharp(file.path);
+
+	const {width, height, channels} = await image.metadata();
+	if(!width || !height || !channels) throw new errors.InvalidParamsError('Could not get image metadata');
+
+	const processedBuffer = await processImageWasm({data: await image.raw().toBuffer(), width, height}, 'gaussian-blur');
+
+	// После обработки создаём новое изображение
+	const outputBuffer = await sharp(processedBuffer, {
+		raw: {
+			width,
+			height,
+			channels,
+		}
+	}).jpeg().toBuffer();
+
+	res.contentType(file.mimetype);
+	res.send(outputBuffer);
+}
+
 /* - - - - - - - - - - - - - - - - - - */
 
-export {get, upload, download, processNative, processWasm};
+export {get, upload, download, processNative, processWasm, processNativeDirect, processWasmDirect};
