@@ -103,18 +103,54 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm\"}[1m])",
+                    "expr": "rate(k6_http_reqs_total{name=\"http://app:5001/image/process-native\"}[15s])",
+                    "fullMetaSearch": false,
+                    "hide": false,
+                    "includeNullMetadata": true,
+                    "interval": "5s",
+                    "legendFormat": "{{name}}",
+                    "range": true,
+                    "refId": "B",
+                    "useBackend": false
+                },
+                {
+                    "disableTextWrap": false,
+                    "editorMode": "code",
+                    "expr": "rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm\"}[15s])",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
-                    "legendFormat": "__auto",
+                    "interval": "5s",
+                    "legendFormat": "{{name}}",
                     "range": true,
                     "refId": "A",
                     "useBackend": false
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
+                    "disableTextWrap": false,
+                    "editorMode": "code",
+                    "expr": "k6_vus",
+                    "fullMetaSearch": false,
+                    "hide": false,
+                    "includeNullMetadata": true,
+                    "instant": false,
+                    "interval": "5s",
+                    "legendFormat": "Virtual Users",
+                    "range": true,
+                    "refId": "C",
+                    "useBackend": false
                 }
             ],
-            "title": "RPS",
+            "title": "RPS + VUs",
             "type": "timeseries"
         },
         {
@@ -206,8 +242,8 @@
                     },
                     "editorMode": "code",
                     "expr": "rate(container_cpu_usage_seconds_total {name=\"backend\"}[10s]) * 100",
-                    "interval": "5s",
-                    "legendFormat": "__auto",
+                    "interval": "",
+                    "legendFormat": "App Container",
                     "range": true,
                     "refId": "A"
                 }
@@ -298,18 +334,50 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
+                    "disableTextWrap": false,
+                    "editorMode": "code",
+                    "expr": "k6_http_req_duration_avg{name=\"http://app:5001/image/process-native\"}",
+                    "fullMetaSearch": false,
+                    "hide": false,
+                    "includeNullMetadata": true,
+                    "interval": "5s",
+                    "legendFormat": "{{name}}",
+                    "range": true,
+                    "refId": "B",
+                    "useBackend": false
+                },
+                {
                     "disableTextWrap": false,
                     "editorMode": "code",
                     "expr": "k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm\"}",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
-                    "legendFormat": "__auto",
+                    "interval": "5s",
+                    "legendFormat": "{{name}}",
                     "range": true,
                     "refId": "A",
                     "useBackend": false
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
+                    "editorMode": "builder",
+                    "expr": "",
+                    "hide": false,
+                    "instant": false,
+                    "interval": "5s",
+                    "legendFormat": "__auto",
+                    "range": true,
+                    "refId": "C"
                 }
             ],
-            "title": "Response Time (s)",
+            "title": "Average Response Time (s)",
             "type": "timeseries"
         },
         {
@@ -403,8 +471,8 @@
                     "expr": "(container_memory_rss {name=\"backend\"}) / 1024 / 1024",
                     "hide": false,
                     "instant": false,
-                    "interval": "5s",
-                    "legendFormat": "__auto",
+                    "interval": "",
+                    "legendFormat": "App Container",
                     "range": true,
                     "refId": "B"
                 }
@@ -428,6 +496,6 @@
     "timezone": "browser",
     "title": "Backend",
     "uid": "fe5sn3ucfy8sga",
-    "version": 3,
+    "version": 1,
     "weekStart": ""
 }
