@@ -7,9 +7,9 @@ export const options = {
 	scenarios: {
 		fixed_rps: {
 			executor: 'constant-arrival-rate',
-			rate: 1,
+			rate: 3,
 			timeUnit: '1s',
-			duration: '10m',
+			duration: '3m',
 			preAllocatedVUs: 1,
 			maxVUs: 100,
 		},
@@ -20,22 +20,11 @@ export const options = {
 // eslint-disable-next-line no-undef
 const fileData = open('/k6/images/0.3mb.jpg', 'b'); // 'b' - для бинарного чтения
 
-export function setup() {
-	const body = http
-		.post(`${HOST}/image/upload`, {image: http.file(fileData, 'mountains.jpg')})
-		.json();
+export default function() {
+	const url = `${HOST}/image/process-native-direct`;
 
-	return body.data;
-}
-
-export default function({id}) {
-	const url = `${HOST}/image/process-native`;
-
-	const res = http.post(
-		url,
-		JSON.stringify({imageId: id, filter: 'gaussian-blur'}),
-		{headers: {'Content-Type': 'application/json'}}
-	);
+	const res = http
+		.post(url, {image: http.file(fileData, 'mountains.jpg')});
 
 	check(res, {
 		'status is 200': r => r.status === 200,
