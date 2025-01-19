@@ -19,11 +19,10 @@
     "compile-wasm": "emcc source/api/image/image.wasm-processor/image.wasm-processor.c -o source/api/image/image.wasm-processor/image.wasm-processor.js -s EXPORTED_FUNCTIONS=\"['_malloc', '_free', '_processImage']\" -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=1 ",
     "tsc": "sh ./scripts/compile-production.sh",
     "benchmark:build": "docker compose -f ./docker-compose.benchmark.yml build app",
-    "benchmark:up": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark --profile default up -d",
+    "benchmark:up": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark up --attach k6",
     "benchmark:start": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark start",
     "benchmark:stop": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark stop",
-    "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down --volumes",
-    "benchmark:test": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark up k6"
+    "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down --volumes"
   },
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",
