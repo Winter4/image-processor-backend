@@ -109,11 +109,11 @@
                     },
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "rate(k6_http_reqs_total{name=\"http://app:5001/image/process-native-direct\"}[15s])",
+                    "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-native-direct\"}[15s]))",
                     "fullMetaSearch": false,
                     "hide": false,
                     "includeNullMetadata": true,
-                    "interval": "5s",
+                    "interval": "",
                     "legendFormat": "{{name}}",
                     "range": true,
                     "refId": "B",
@@ -122,31 +122,13 @@
                 {
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm-direct\"}[15s])",
+                    "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm-direct\"}[15s]))",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
-                    "interval": "5s",
+                    "interval": "",
                     "legendFormat": "{{name}}",
                     "range": true,
                     "refId": "A",
-                    "useBackend": false
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "disableTextWrap": false,
-                    "editorMode": "code",
-                    "expr": "k6_vus",
-                    "fullMetaSearch": false,
-                    "hide": false,
-                    "includeNullMetadata": true,
-                    "instant": false,
-                    "interval": "5s",
-                    "legendFormat": "Virtual Users",
-                    "range": true,
-                    "refId": "C",
                     "useBackend": false
                 }
             ],
@@ -340,7 +322,7 @@
                     },
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "k6_http_req_duration_avg{name=\"http://app:5001/image/process-native-direct\"}",
+                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-native-direct\"})",
                     "fullMetaSearch": false,
                     "hide": false,
                     "includeNullMetadata": true,
@@ -353,7 +335,7 @@
                 {
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm-direct\"}",
+                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm-direct\"})",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
                     "interval": "5s",
@@ -361,20 +343,6 @@
                     "range": true,
                     "refId": "A",
                     "useBackend": false
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "editorMode": "builder",
-                    "expr": "",
-                    "hide": false,
-                    "instant": false,
-                    "interval": "5s",
-                    "legendFormat": "__auto",
-                    "range": true,
-                    "refId": "C"
                 }
             ],
             "title": "Average Response Time (s)",

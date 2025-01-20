@@ -5,7 +5,6 @@
   "main": "",
   "scripts": {
     "update-packages": "sh ./scripts/update-packages.sh",
-    "prepare": "husky",
     "psql": "docker exec -it image-processor-postgres psql -U dev image-processor",
     "api:dev": "cross-env NODE_ENV=development npx nodemon source/api.ts | pino-pretty --translateTime",
     "compose:up": "docker compose -f ./docker-compose.dev.yml up -d",
@@ -22,7 +21,8 @@
     "benchmark:up": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark up --attach k6",
     "benchmark:start": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark start",
     "benchmark:stop": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark stop",
-    "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down --volumes"
+    "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down --volumes",
+    "benchmark:retest": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark restart k6"
   },
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",
@@ -53,7 +53,6 @@
     "@types/node": "^22.5.0",
     "eslint": "^9.9.0",
     "globals": "^15.9.0",
-    "husky": "^9.1.5",
     "mocha": "^10.7.3",
     "nodemon": "^3.1.4",
     "npm-check-updates": "^17.1.0",

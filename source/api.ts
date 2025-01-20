@@ -9,7 +9,6 @@ import {logger} from '@ctx';
 
 import {errorHandler, preMiddlewares} from './middlewares';
 import api from './api/api.router';
-import './metrics';
 
 const tmpDirPath = path.resolve(__dirname, '..', '.tmp');
 
