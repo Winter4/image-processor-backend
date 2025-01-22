@@ -23,14 +23,14 @@ services:
       postgres:
         condition: service_healthy
         required: true
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 2048M
-        reservations:
-          cpus: '1'
-          memory: 1024M
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1'
+    #       memory: 2048M
+    #     reservations:
+    #       cpus: '1'
+    #       memory: 1024M
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest

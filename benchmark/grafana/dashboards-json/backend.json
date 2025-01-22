@@ -103,6 +103,18 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
+                    "disableTextWrap": false,
+                    "editorMode": "code",
+                    "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-native\"}[15s]))",
+                    "fullMetaSearch": false,
+                    "includeNullMetadata": true,
+                    "interval": "",
+                    "legendFormat": "{{name}}",
+                    "range": true,
+                    "refId": "A",
+                    "useBackend": false
+                },
+                {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "PBFA97CFB590B2093"
@@ -120,16 +132,47 @@
                     "useBackend": false
                 },
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
+                    "editorMode": "code",
+                    "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm\"}[15s]))",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "{{name}}",
+                    "range": true,
+                    "refId": "C"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
                     "disableTextWrap": false,
                     "editorMode": "code",
                     "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm-direct\"}[15s]))",
                     "fullMetaSearch": false,
+                    "hide": false,
                     "includeNullMetadata": true,
                     "interval": "",
                     "legendFormat": "{{name}}",
                     "range": true,
-                    "refId": "A",
+                    "refId": "D",
                     "useBackend": false
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
+                    "editorMode": "code",
+                    "expr": "k6_vus",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "VUs",
+                    "range": true,
+                    "refId": "E"
                 }
             ],
             "title": "RPS + VUs",
@@ -316,6 +359,18 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
+                    "disableTextWrap": false,
+                    "editorMode": "code",
+                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-native\"})",
+                    "fullMetaSearch": false,
+                    "includeNullMetadata": true,
+                    "interval": "5s",
+                    "legendFormat": "{{name}}",
+                    "range": true,
+                    "refId": "A",
+                    "useBackend": false
+                },
+                {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "PBFA97CFB590B2093"
@@ -333,15 +388,37 @@
                     "useBackend": false
                 },
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm-direct\"})",
+                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm\"})",
                     "fullMetaSearch": false,
+                    "hide": false,
                     "includeNullMetadata": true,
                     "interval": "5s",
                     "legendFormat": "{{name}}",
                     "range": true,
-                    "refId": "A",
+                    "refId": "C",
+                    "useBackend": false
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "PBFA97CFB590B2093"
+                    },
+                    "disableTextWrap": false,
+                    "editorMode": "code",
+                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm-direct\"})",
+                    "fullMetaSearch": false,
+                    "hide": false,
+                    "includeNullMetadata": true,
+                    "interval": "5s",
+                    "legendFormat": "{{name}}",
+                    "range": true,
+                    "refId": "D",
                     "useBackend": false
                 }
             ],

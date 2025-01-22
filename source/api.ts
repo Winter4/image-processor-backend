@@ -13,7 +13,7 @@ import api from './api/api.router';
 const tmpDirPath = path.resolve(__dirname, '..', '.tmp');
 
 async function main() {
-	const {nodeEnv, deploy: {apiPort, frontendUrl}} = config;
+	const {deploy: {apiPort, frontendUrl}} = config;
 
 	const app = express();
 
@@ -24,8 +24,7 @@ async function main() {
 
 	// api and stuff
 	app.use(preMiddlewares());
-	if(nodeEnv === 'development') app.use('/api', api);
-	else app.use(api);
+	app.use(api);
 
 	app.use(errorHandler);
 
