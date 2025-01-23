@@ -15,14 +15,15 @@
     "migrate:new": "cross-env NODE_ENV=development npx knex migrate:make --knexfile ./database/knexfile.ts --migrations-directory ../migrations",
     "migrate": "cross-env NODE_ENV=development npx knex migrate:latest --knexfile ./database/knexfile.ts --migrations-directory ../migrations",
     "test": "mocha --config ./tests/mocha.config.js --exit",
-    "compile-wasm": "emcc source/api/image/image.wasm-processor/image.wasm-processor.c -o source/api/image/image.wasm-processor/image.wasm-processor.js -s EXPORTED_FUNCTIONS=\"['_malloc', '_free', '_processImage']\" -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=1 ",
+    "compile-wasm": "emcc source/api/image/image.wasm-processor/image.wasm-processor.c -o source/api/image/image.wasm-processor/image.wasm-processor.js -s EXPORTED_FUNCTIONS=\"['_malloc', '_free', '_processImage']\" -s EXPORT_NAME='imager' -s MODULARIZE=1 -s TOTAL_MEMORY=2048MB -pthread -s PTHREAD_POOL_SIZE=4 -s PTHREAD_POOL_SIZE_STRICT=1",
     "tsc": "sh ./scripts/compile-production.sh",
     "benchmark:build": "docker compose -f ./docker-compose.benchmark.yml build app",
     "benchmark:up": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark up --attach k6",
     "benchmark:start": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark start",
     "benchmark:stop": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark stop",
     "benchmark:down": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark down --volumes",
-    "benchmark:retest": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark restart k6"
+    "benchmark:restart": "npm run benchmark:down && npm run benchmark:up",
+    "test:stop": "docker compose -f ./docker-compose.benchmark.yml -p image-benchmark stop k6"
   },
   "author": "Winter4 <mywinter4@gmail.com>",
   "license": "ISC",

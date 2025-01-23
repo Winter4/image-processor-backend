@@ -1,6 +1,20 @@
 #include <math.h>
 #include <stdlib.h>
+#include <pthread.h>
 
+// Структура данных для передачи в поток
+typedef struct {
+    const unsigned char* input;
+    unsigned char* output;
+    int width;
+    int height;
+    const double* kernel;
+    int kernelSize;
+    int startRow;
+    int endRow;
+} ThreadData;
+
+// Создаём ядро Гаусса
 void createGaussianKernel(int size, double sigma, double* kernel) {
     int halfSize = size / 2;
     double sigma2 = sigma * sigma;
@@ -20,6 +34,7 @@ void createGaussianKernel(int size, double sigma, double* kernel) {
     }
 }
 
+// Применяем ядро к пикселям
 void applyKernel(
     const unsigned char* input,
     unsigned char* output,
@@ -52,6 +67,29 @@ void applyKernel(
     output[i + 2] = (unsigned char)b;
 }
 
+// Функция, выполняемая в каждом потоке
+void* threadWorker(void* arg) {
+    ThreadData* data = (ThreadData*)arg;
+
+    for (int y = data->startRow; y < data->endRow; y++) {
+        for (int x = 0; x < data->width; x++) {
+            applyKernel(
+                data->input,
+                data->output,
+                x,
+                y,
+                data->width,
+                data->height,
+                data->kernel,
+                data->kernelSize
+            );
+        }
+    }
+
+    return NULL;
+}
+
+// Основная функция обработки изображения
 void processImage(
     const unsigned char* input,
     unsigned char* output,
@@ -63,17 +101,34 @@ void processImage(
 ) {
     double* kernel = (double*)malloc(kernelSize * kernelSize * sizeof(double));
 
-    if(filter == 1) {
+    if (filter == 1) { // Gaussian Blur
         createGaussianKernel(kernelSize, sigma, kernel);
-    }
-    else {
+    } else {
+        free(kernel);
         return;
     }
 
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            applyKernel(input, output, x, y, width, height, kernel, kernelSize);
-        }
+    int numThreads = 4; // Количество потоков
+    pthread_t threads[numThreads];
+    ThreadData threadData[numThreads];
+
+    int rowsPerThread = height / numThreads;
+
+    for (int i = 0; i < numThreads; i++) {
+        threadData[i].input = input;
+        threadData[i].output = output;
+        threadData[i].width = width;
+        threadData[i].height = height;
+        threadData[i].kernel = kernel;
+        threadData[i].kernelSize = kernelSize;
+        threadData[i].startRow = i * rowsPerThread;
+        threadData[i].endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread;
+
+        pthread_create(&threads[i], NULL, threadWorker, &threadData[i]);
+    }
+
+    for (int i = 0; i < numThreads; i++) {
+        pthread_join(threads[i], NULL);
     }
 
     free(kernel);

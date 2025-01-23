@@ -105,7 +105,7 @@ async function processNativeDirect(req: Request, res: Response) {
 	const {file} = req;
 	if(!file) throw new errors.InvalidRequestError('Request should contain a file to upload');
 
-	const image = await sharp(file.path);
+	const image = await sharp(file.path, {limitInputPixels: 858_000_000});
 
 	const {width, height, channels} = await image.metadata();
 	if(!width || !height || !channels) throw new errors.InvalidParamsError('Could not get image metadata');
@@ -118,7 +118,8 @@ async function processNativeDirect(req: Request, res: Response) {
 			width,
 			height,
 			channels,
-		}
+		},
+		limitInputPixels: 858_000_000
 	}).jpeg().toBuffer();
 
 	res.contentType(file.mimetype);
@@ -129,7 +130,7 @@ async function processWasmDirect(req: Request, res: Response) {
 	const {file} = req;
 	if(!file) throw new errors.InvalidRequestError('Request should contain a file to upload');
 
-	const image = await sharp(file.path);
+	const image = await sharp(file.path, {limitInputPixels: 858_000_000});
 
 	const {width, height, channels} = await image.metadata();
 	if(!width || !height || !channels) throw new errors.InvalidParamsError('Could not get image metadata');
@@ -142,7 +143,8 @@ async function processWasmDirect(req: Request, res: Response) {
 			width,
 			height,
 			channels,
-		}
+		},
+		limitInputPixels: 858_000_000
 	}).jpeg().toBuffer();
 
 	res.contentType(file.mimetype);
