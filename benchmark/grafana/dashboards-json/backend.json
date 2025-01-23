@@ -103,18 +103,6 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
-                    "disableTextWrap": false,
-                    "editorMode": "code",
-                    "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-native\"}[15s]))",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "interval": "",
-                    "legendFormat": "{{name}}",
-                    "range": true,
-                    "refId": "A",
-                    "useBackend": false
-                },
-                {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "PBFA97CFB590B2093"
@@ -126,23 +114,10 @@
                     "hide": false,
                     "includeNullMetadata": true,
                     "interval": "",
-                    "legendFormat": "{{name}}",
+                    "legendFormat": "/process-native-direct",
                     "range": true,
                     "refId": "B",
                     "useBackend": false
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "editorMode": "code",
-                    "expr": "sum(rate(k6_http_reqs_total{name=\"http://app:5001/image/process-wasm\"}[15s]))",
-                    "hide": false,
-                    "instant": false,
-                    "legendFormat": "{{name}}",
-                    "range": true,
-                    "refId": "C"
                 },
                 {
                     "datasource": {
@@ -156,7 +131,7 @@
                     "hide": false,
                     "includeNullMetadata": true,
                     "interval": "",
-                    "legendFormat": "{{name}}",
+                    "legendFormat": "/process-wasm-direct",
                     "range": true,
                     "refId": "D",
                     "useBackend": false
@@ -359,18 +334,6 @@
             "pluginVersion": "11.3.1",
             "targets": [
                 {
-                    "disableTextWrap": false,
-                    "editorMode": "code",
-                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-native\"})",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "interval": "5s",
-                    "legendFormat": "{{name}}",
-                    "range": true,
-                    "refId": "A",
-                    "useBackend": false
-                },
-                {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "PBFA97CFB590B2093"
@@ -382,26 +345,9 @@
                     "hide": false,
                     "includeNullMetadata": true,
                     "interval": "5s",
-                    "legendFormat": "{{name}}",
+                    "legendFormat": "/process-native-direct",
                     "range": true,
                     "refId": "B",
-                    "useBackend": false
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "disableTextWrap": false,
-                    "editorMode": "code",
-                    "expr": "sum(k6_http_req_duration_avg{name=\"http://app:5001/image/process-wasm\"})",
-                    "fullMetaSearch": false,
-                    "hide": false,
-                    "includeNullMetadata": true,
-                    "interval": "5s",
-                    "legendFormat": "{{name}}",
-                    "range": true,
-                    "refId": "C",
                     "useBackend": false
                 },
                 {
@@ -416,7 +362,7 @@
                     "hide": false,
                     "includeNullMetadata": true,
                     "interval": "5s",
-                    "legendFormat": "{{name}}",
+                    "legendFormat": "/process-wasm-direct",
                     "range": true,
                     "refId": "D",
                     "useBackend": false
