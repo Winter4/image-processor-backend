@@ -10,6 +10,7 @@ type Config = {
 		dbLogs: boolean;
 		redisUrl: string;
 	};
+	maxImageSizeBytes: number;
 }
 
 export default Config;

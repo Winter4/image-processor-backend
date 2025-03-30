@@ -15,7 +15,8 @@ const config: Config = {
 		dbUrl: 'postgresql://dev:localpass@postgres:5432/image-processor',
 		dbLogs: false,
 		redisUrl: 'redis://:localpass@localhost:6300/0'
-	}
+	},
+	maxImageSizeBytes: 15 * 1024 * 1024 // 15 MB
 };
 
 export default config;
