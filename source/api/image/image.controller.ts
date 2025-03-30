@@ -14,13 +14,18 @@ async function _process(req: Request, res: Response, process: ProcessFunction) {
 	const {file} = req;
 	if(!file) throw new errors.InvalidRequestError('Request should contain a file to upload');
 
+	// console.time('pre');
 	const image = await sharp(file.path, {limitInputPixels: 858_000_000});
 
 	const {width, height, channels} = await image.metadata();
 	if(!width || !height || !channels) throw new errors.InvalidParamsError('Could not get image metadata');
+	// console.timeEnd('pre');
 
+	// console.time('process');
 	const processedBuffer = await process((await image.raw().toBuffer()), width, height);
+	// console.timeEnd('process');
 
+	// console.time('post');
 	// После обработки создаём новое изображение
 	const outputBuffer = await sharp(processedBuffer, {
 		raw: {
@@ -30,6 +35,7 @@ async function _process(req: Request, res: Response, process: ProcessFunction) {
 		},
 		limitInputPixels: 858_000_000
 	}).jpeg().toBuffer();
+	// console.timeEnd('post');
 
 	res.contentType(file.mimetype);
 	res.send(outputBuffer);

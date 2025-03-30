@@ -9,7 +9,7 @@ const methods = {
 	native: 'process-native',
 	wasm: 'process-wasm',
 };
-const METHOD = methods.native;
+const METHOD = methods.wasm;
 
 const images = {
 	small: '0.3mb.jpg',
@@ -28,7 +28,7 @@ export const options = {
 		sequential_requests: {
 			executor: 'shared-iterations',
 			vus: 1,
-			iterations: 150,
+			iterations: 15,
 			maxDuration: '60m',
 		},
 	},
