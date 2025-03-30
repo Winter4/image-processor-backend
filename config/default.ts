@@ -11,12 +11,8 @@ const config: Config = {
 	projectName: 'image-processor',
 	deploy: {
 		apiPort: 5001,
-		frontendUrl: 'http://localhost:3000',
-		dbUrl: 'postgresql://dev:localpass@postgres:5432/image-processor',
-		dbLogs: false,
-		redisUrl: 'redis://:localpass@localhost:6300/0'
-	},
-	maxImageSizeBytes: 15 * 1024 * 1024 // 15 MB
+		frontendUrl: 'http://localhost:3000'
+	}
 };
 
 export default config;

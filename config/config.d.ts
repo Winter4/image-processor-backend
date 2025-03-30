@@ -6,11 +6,7 @@ type Config = {
 	deploy: {
 		apiPort: number;
 		frontendUrl: string;
-		dbUrl: string;
-		dbLogs: boolean;
-		redisUrl: string;
 	};
-	maxImageSizeBytes: number;
 }
 
 export default Config;

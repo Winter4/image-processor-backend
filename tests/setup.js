@@ -2,15 +2,8 @@
 const fs = require('fs');
 const supertest = require('supertest');
 const path = require('path');
-const knex = require('knex');
 
 const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../config', 'config.json')));
-const api = supertest(`http://localhost:${config.deploy.apiPort}/api`);
+const api = supertest(`http://localhost:${config.deploy.apiPort}`);
 
-const db = knex({
-	client: 'pg',
-	connection: config.deploy.dbUrl,
-	debug: config.deploy.dbLogs
-});
-
-module.exports = {config, api, db};
+module.exports = {config, api};

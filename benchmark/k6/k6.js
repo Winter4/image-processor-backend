@@ -6,12 +6,10 @@ import {check} from 'k6';
 const HOST = 'http://app:5001';
 
 const methods = {
-	nativeDb: 'process-native',
-	nativeDirect: 'process-native-direct',
-	wasmDb: 'process-wasm',
-	wasmDirect: 'process-wasm-direct'
+	native: 'process-native',
+	wasm: 'process-wasm',
 };
-const METHOD = methods.wasmDirect;
+const METHOD = methods.native;
 
 const images = {
 	small: '0.3mb.jpg',
@@ -36,32 +34,10 @@ export const options = {
 	},
 };
 
-export function setup() {
-	const body = http
-		.post(`${HOST}/image/upload`, {image: http.file(fileData, 'test.jpg')})
-		.json();
-
-	return body.data;
-}
-
-const useDbMethod = (url, id) => () =>
-	http.post(
-		url,
-		JSON.stringify({imageId: id, filter: 'gaussian-blur'}),
-		{headers: {'Content-Type': 'application/json'}}
-	);
-
-const useDirectMethod = url => () =>
-	http
-		.post(url, {image: http.file(fileData, 'test.jpg')});
-
-export default function({id}) {
+export default function() {
 	const url = `${HOST}/image/${METHOD}`;
 
-	const direct = METHOD === methods.nativeDirect || METHOD === methods.wasmDirect;
-	const func = direct ? useDirectMethod(url) : useDbMethod(url, id);
-
-	const res = func();
+	const res = http.post(url, {image: http.file(fileData, 'test.jpg')});
 
 	check(res, {
 		'status is 200': r => r.status === 200,

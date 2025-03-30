@@ -1,34 +1,24 @@
-type ImageParam = {
-    data: Buffer;
-    width: number;
-    height: number;
-}
+// ---
 
-function processImage(imageData: ImageParam, filter: string): Buffer {
-	const {data, width, height} = imageData;
-
+function processImage(data: Buffer, width: number, height: number): Buffer {
 	// Преобразуем Buffer в Uint8ClampedArray для работы с изображением
 	const inputArray = new Uint8ClampedArray(data);
 
-	if(filter === 'gaussian-blur') {
-		const kernelSize = 7;
-		const sigma = 7.0;
-		const kernel = createGaussianKernel(kernelSize, sigma);
+	const kernelSize = 7;
+	const sigma = 7.0;
+	const kernel = createGaussianKernel(kernelSize, sigma);
 
-		const outputArray = new Uint8ClampedArray(inputArray.length);
+	const outputArray = new Uint8ClampedArray(inputArray.length);
 
-		// Применение Гауссова размытия
-		for(let y = 0; y < height; y++) {
-			for(let x = 0; x < width; x++) {
-				applyKernel(inputArray, outputArray, x, y, width, height, kernel, kernelSize);
-			}
+	// Применение Гауссова размытия
+	for(let y = 0; y < height; y++) {
+		for(let x = 0; x < width; x++) {
+			applyKernel(inputArray, outputArray, x, y, width, height, kernel, kernelSize);
 		}
-
-		// Преобразуем результат обратно в Buffer
-		return Buffer.from(outputArray);
-	} else {
-		throw new Error('Unknown filter');
 	}
+
+	// Преобразуем результат обратно в Buffer
+	return Buffer.from(outputArray);
 }
 
 function createGaussianKernel(size: number, sigma: number): number[] {
