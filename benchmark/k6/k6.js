@@ -17,7 +17,7 @@ const images = {
 	small: '0.3mb.jpg',
 	large: '10mb.jpg'
 };
-const IMAGE = images.small;
+const IMAGE = images.large;
 
 // Читаем файл из смонтированной директории
 // eslint-disable-next-line no-undef
@@ -25,40 +25,12 @@ const fileData = open(`/k6/images/${IMAGE}`, 'b'); // 'b' - для бинарн�
 
 /* = = = = = = = = = = = = = = = = = = */
 
-/* export const options = {
-	scenarios: {
-		fixed_rps: {
-			executor: 'constant-arrival-rate',
-			rate: 7,
-			timeUnit: '1s',
-			duration: '3m',
-			preAllocatedVUs: 1,
-			maxVUs: 100,
-		},
-	},
-}; */
-/*
-export const options = {
-	scenarios: {
-		ramping_rate: {
-			executor: 'ramping-arrival-rate',
-			startRate: 1,
-			timeUnit: '1s',
-			stages: [
-				{target: 10, duration: '10m'}
-			],
-			preAllocatedVUs: 1,
-			maxVUs: 3,
-		},
-	},
-}; */
-
 export const options = {
 	scenarios: {
 		sequential_requests: {
 			executor: 'shared-iterations',
 			vus: 1,
-			iterations: 1000,
+			iterations: 150,
 			maxDuration: '60m',
 		},
 	},
