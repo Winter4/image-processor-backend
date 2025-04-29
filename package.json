@@ -4,6 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
+    "lint": "npx eslint",
     "update-packages": "sh ./scripts/update-packages.sh",
     "api:dev": "cross-env NODE_ENV=development npx nodemon source/api.ts | pino-pretty --translateTime",
     "test": "mocha --config ./tests/mocha.config.js --exit",
