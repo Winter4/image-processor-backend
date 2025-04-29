@@ -1,0 +1,46 @@
+# ---
+
+x-app-base: &app-base
+  build: .
+  image: image-processor-backend:latest
+  restart: no
+
+# - - - - - - - - - - - - -
+
+services:
+  app:
+    <<: *app-base
+    container_name: backend
+    healthcheck:
+      test: wget -nv -t1 --spider http://localhost:5001/ping/
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 2048M
+        reservations:
+          cpus: '1'
+          memory: 1024M
+    
+
+  # cli:
+  #   <<: *app-base
+  #   container_name: backend-cli
+  #   command: sh -c "echo cli ready"
+  #   depends_on:
+  #     app:
+  #       condition: service_healthy
+  #       required: true
+
+  # test:
+  #   build: .
+  #   image: image-processor-backend:latest
+  #   container_name: test
+  #   command: sh -c "npm run test"
+  #   depends_on:
+  #     app:
+  #       condition: service_healthy
+  #       required: true
