@@ -45,10 +45,14 @@ function processNative(req: Request, res: Response) {
 	return _process(req, res, processImageNative);
 }
 
-async function processWasm(req: Request, res: Response) {
-	return _process(req, res, processImageWasm);
+async function processWasmSinglethread(req: Request, res: Response) {
+	return _process(req, res, processImageWasm('single'));
+}
+
+async function processWasmMultithread(req: Request, res: Response) {
+	return _process(req, res, processImageWasm('multi'));
 }
 
 /* - - - - - - - - - - - - - - - - - - */
 
-export {processNative, processWasm};
+export {processNative, processWasmSinglethread, processWasmMultithread};

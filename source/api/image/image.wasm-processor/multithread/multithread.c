@@ -96,17 +96,10 @@ void processImage(
     int width,
     int height,
     int kernelSize,
-    double sigma,
-    int filter
+    double sigma
 ) {
     double* kernel = (double*)malloc(kernelSize * kernelSize * sizeof(double));
-
-    if (filter == 1) { // Gaussian Blur
-        createGaussianKernel(kernelSize, sigma, kernel);
-    } else {
-        free(kernel);
-        return;
-    }
+    createGaussianKernel(kernelSize, sigma, kernel);
 
     int numThreads = 4; // Количество потоков
     pthread_t threads[numThreads];

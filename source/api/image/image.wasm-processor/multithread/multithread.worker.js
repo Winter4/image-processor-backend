@@ -108,7 +108,7 @@ self.onmessage = (e) => {
         importScripts(objectUrl);
         URL.revokeObjectURL(objectUrl);
       }
-      imager(Module).then(function (instance) {
+      imager_multithread(Module).then(function (instance) {
         Module = instance;
       });
     } else if (e.data.cmd === 'run') {

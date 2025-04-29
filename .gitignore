@@ -3,7 +3,6 @@
 docker-compose.deploy.yml
 .env
 
-.husky/_
 .tmp
 
 config/local.ts
