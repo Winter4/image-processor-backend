@@ -3,19 +3,22 @@ import {check} from 'k6';
 
 /* = = = = = = = = = = = = = = = = = = */
 
-const HOST = 'http://app:5001';
+const HOST = 'http://localhost:5001';
 
 const methods = {
 	native: 'process-native',
-	wasm: 'process-wasm',
+	wasm: {
+		single: 'process-wasm-single',
+		multi: 'process-wasm-multi'
+	}
 };
-const METHOD = methods.wasm;
+const METHOD = methods.wasm.single;
 
 const images = {
 	small: '0.3mb.jpg',
 	large: '10mb.jpg'
 };
-const IMAGE = images.large;
+const IMAGE = images.small;
 
 // Читаем файл из смонтированной директории
 // eslint-disable-next-line no-undef

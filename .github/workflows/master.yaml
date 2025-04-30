@@ -19,11 +19,11 @@ jobs:
 
           - name: Run backend
             run: | 
-              docker compose -f docker-compose.workflow.yml create app
-              docker compose -f docker-compose.workflow.yml start app
+              docker compose create app
+              docker compose start app
 
           - name: Run linter
-            run: docker compose -f docker-compose.workflow.yml exec -T app npm run lint
+            run: docker compose exec -T app npm run lint
 
     test:
         runs-on: ubuntu-22.04
@@ -37,8 +37,8 @@ jobs:
 
           - name: Run backend
             run: | 
-              docker compose -f docker-compose.workflow.yml create app
-              docker compose -f docker-compose.workflow.yml start app
+              docker compose create app
+              docker compose start app
 
           - name: Run tests
-            run: docker compose -f docker-compose.workflow.yml exec -T app npm run test
+            run: docker compose exec -T app npm run test

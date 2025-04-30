@@ -12,7 +12,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: always
+    restart: no
     deploy:
       resources:
         limits:
@@ -25,8 +25,6 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
-    ports:
-      - "9100:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -59,20 +57,6 @@ services:
       - "3001:3000"
     depends_on:
       - prometheus
-
-  k6:
-    image: grafana/k6
-    container_name: k6
-    environment:
-      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
-      - K6_PROMETHEUS_RW_TREND_STATS=avg
-    volumes:
-      - ./benchmark/k6:/k6
-    command: run --out experimental-prometheus-rw /k6/k6.js # image entrypoint is 'k6'
-    depends_on:
-      app:
-        condition: service_healthy
-        required: true
 
 volumes:
   grafana-data:

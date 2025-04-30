@@ -1,0 +1,13 @@
+# ---
+
+services:
+  k6:
+    image: grafana/k6
+    container_name: k6
+    network_mode: host
+    environment:
+      - K6_PROMETHEUS_RW_SERVER_URL=http://localhost:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_STATS=avg
+    volumes:
+      - ./benchmark/k6:/k6
+    command: run --out experimental-prometheus-rw /k6/k6.js # image entrypoint is 'k6'
