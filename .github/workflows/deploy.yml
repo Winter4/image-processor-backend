@@ -24,6 +24,6 @@ jobs:
             cd /home/winter/image-processor-backend
             git checkout master
             git pull
-            npm run compose:down
-            npm run compose:build
-            npm run compose:up
+            docker compose down --volumes
+            docker compose build app
+            docker compose up -d
