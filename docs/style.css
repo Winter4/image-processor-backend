@@ -1,0 +1,352 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Viaoda+Libre&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "El Messiri", sans-serif;
+  background-color: #fafafa;
+  color: #111;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+nav {
+  position: fixed;
+  padding-left: 5rem;
+  top: 0;
+  left: 0;
+  min-height: 4rem;
+  height: auto; /* чтобы влезли 2 строки */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  font-weight: 200;
+  font-size: 1.2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000; 
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #d28b18;
+}
+
+nav a.active {
+  color: rgb(225, 154, 46);
+  font-weight: bold;
+}
+
+header {
+  margin-top: 4rem;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  height: 92vh;
+}
+
+.shape.orange {
+  position: absolute;
+  background: #ffd276;
+  left: 0;
+  z-index: 1;
+  width: 70%;
+  height: 100%;
+  border-top-right-radius: 20rem;
+}
+
+.shape.gray {
+  position: absolute;
+  background: #e1e1de;
+  right: 0;
+  z-index: 2;
+  width: 50%;
+  height: 80%;
+  top: 10%;
+  border-bottom-left-radius: 20rem;
+}
+
+.header-content {
+  position: relative;
+  z-index: 3;
+  padding: 10rem 5rem 5rem 10rem;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 4rem;
+}
+
+.header-content h1 {
+  font-size: 3.5rem;
+  line-height: 1.2;
+}
+
+.header-content h3 {
+  font-weight: 300;
+  font-size: 1.7rem;
+}
+
+.header-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+main {
+  background-color: #faf8f8;
+}
+
+.section-content {
+  position: relative;
+  padding: 5rem 10rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+  justify-content: space-between;
+  overflow: hidden; /* Чтобы форма не вылезала за пределы */
+}
+
+
+.section-content__headers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.section-content__headers.reverse {
+  flex-direction: row-reverse;
+}
+
+.section-content__logo {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.section-content__logo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #cac7c2; 
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.section-content__logo img,
+.section-content__logo h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.section-content__logo img {
+    width: 50%;
+    height: 50%;
+}
+
+.section-content__main {
+  text-align: end;         
+  margin-left: auto;
+  padding-right: 3rem;       
+  margin-bottom: 2rem;
+  width: 80%;
+  max-width: 900px;
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.section-content__main.reverse {
+    text-align: start;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    width: 70%;
+    line-height: 1.6;
+}
+
+
+.shape.blue {
+  position: absolute;
+  background: #6690d0;
+  bottom: 5rem;
+  right: 10rem;
+  z-index: 0;
+  width: 70%;
+  height: 60%;
+  border-top-left-radius: 20rem;
+}
+
+.shape.orangee {
+  position: absolute;
+  background: #ffd276;
+  bottom: 5rem;
+  left: 10rem;
+  z-index: 0;
+  width: 70%;
+  height: 60%;
+  border-top-right-radius: 20rem;
+}
+
+.circle {
+  width: 10rem;
+  height: 10rem;
+  background-color: rgb(187, 182, 174); /* любой цвет */
+  border-radius: 50%;
+}
+
+.section-content__logotext p,
+.section-content__main h2,
+.section-content__main p {
+  position: relative;
+  font-size: 1.5rem;
+  z-index: 10;
+}
+
+#additionally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: space-between;
+}
+
+.left-addon,
+.right-addon {
+  flex: 1 1 48%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+footer {
+  background-color: #E0E3E1;
+  display: grid;
+  grid-template: 1fr 1fr/ 1fr 1fr;
+  padding: 2rem;
+  gap: 1rem;
+  text-align: center;
+  align-items: center;
+}
+
+footer .icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+footer img {
+  height: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+footer img:hover {
+  transform: scale(1.1);
+}
+
+.owner-name {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+footer p {
+    font-size: 1.3rem;
+}
+
+@media (max-width: 500px) {
+
+   .header-content {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    padding-top: 2rem;
+    text-align: center;
+    margin: 0 auto;
+   }
+
+   .header-content h1 {
+    font-size: 2rem;
+   }
+
+   .header-content img {
+    height: 10rem;
+
+   }
+
+   nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);                         
+    padding: 10rem;                          
+    justify-items: center;                 
+    align-items: center;
+    box-sizing: border-box; 
+    font-size: 1rem;
+    gap: 0.2rem;
+    padding: 0.5rem;
+    z-index: 100;
+   }
+
+   .section-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    padding-top: 7rem;
+    height: auto;
+   }
+
+   .blue, .orangee {
+    display: none;
+   }
+
+   .section-content__headers, .section-content__headers.reverse {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+   }
+
+   .section-content__logotext {
+    font-weight: bold;
+    text-align: center;
+   }
+
+  .section-content__main, .section-content__main.reverse {
+    margin: 0 auto;
+    width: 100%;
+    text-align: justify;
+    padding-bottom: 4rem;
+    padding-right: 0;
+    border-bottom: 1px dashed black;
+  }
+
+  .section-content h2 {
+    font-size: 1rem;
+    text-align: justify;
+  }
+}
